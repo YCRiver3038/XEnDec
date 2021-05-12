@@ -1,4 +1,4 @@
-﻿#include "xemod5.c"
+﻿#include "xemod5.h"
 #include "filend.h"
 #include "xemod_common.h"
 

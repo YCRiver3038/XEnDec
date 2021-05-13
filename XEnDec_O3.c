@@ -26,7 +26,7 @@ void body(char fileName[])
 
 	fileNameDetect(fileName, &nameWoExt, &fileExt);
 
-	ftNumRet = fileTypeDetect(fileExt);
+	ftNumRet = fileTypeDetect(&fileExt);
 
 	/*種別ごとの取扱いかた------------------------------------------*/
     if (ftNumRet == 8) //入力がVer3(xeb3)

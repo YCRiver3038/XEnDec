@@ -1,4 +1,5 @@
 #include "XEnDec_Common.h"
+#include "xemod_common.h"
 
 int genRandXEV2()
 {

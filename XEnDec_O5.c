@@ -75,8 +75,12 @@ void body(char fileName[])
         return;       
     }
 
-	fclose(openF);
-	fclose(outF);
+	if (openF != NULL){
+		fclose(openF);
+	}
+	if(outF != NULL){
+		fclose(outF);
+	}
 }
 
 int main(int argc, char *argv[])

@@ -168,25 +168,55 @@ void body(char fileName[])
         V4seed = genRand32();
 
         printf("処理中...\n");
+		
+		#ifdef DEBUGGING
+		printf("in body() - entering genXENC4()\n");
+		#endif
+
         genXENC4(openF, outF, V4seed, fileExt);
+
+		#ifdef DEBUGGING
+		printf("in body() - exited from genXENC4()\n");
+		#endif
+
 	}
 	else
 	{
         printf("スキップしました。\n"); 
         return;       
     }
+/*
+	#ifdef DEBUGGING
+	printf("in body() - freeing allocated memory:");
+	#endif
 
-	fclose(openF);
-	fclose(outF);
-
-	if(nameWoExt){
+	if(nameWoExt != NULL){
 		free(nameWoExt);
 		return;
 	}
-	if(fileExt){
+	if(fileExt != NULL){
 		free(fileExt);
 		return;
 	}
+
+	#ifdef DEBUGGING
+	printf("done\n");
+	#endif
+*/
+	#ifdef DEBUGGING
+	printf("in body() - closiong files\n");
+	#endif
+
+	if (openF != NULL){
+		fclose(openF);
+	}
+	if(outF != NULL){
+		fclose(outF);
+	}
+
+	#ifdef DEBUGGING
+	printf("in body() - file closed\n");
+	#endif
 }
 
 int main(int argc, char *argv[])

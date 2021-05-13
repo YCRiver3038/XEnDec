@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0)
 project(XEnDec_test)
 
+set(CMAKE_C_FLAGS "-g")
+
 add_library(xemod_common STATIC xemod_common.c)
 add_library(filend STATIC filend.c)
 

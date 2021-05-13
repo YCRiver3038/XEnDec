@@ -15,6 +15,9 @@ void setRand32(int number)
 
 int jOpen(FILE *inputf)
 {
+	#ifdef DEBUGGING
+	printf("at jOpen() - thrown pointer:%p\n", inputf);
+	#endif
 	if (inputf == NULL)
 	{
 		printf("ファイルが開けませんでした。\n");
@@ -36,30 +39,87 @@ void intToChar(int source, unsigned char target[], int wordLength)
 	}
 }
 
-int fileTypeDetect(char* fext){
+int fileTypeDetect(char** argfext){
 /*-拡張子によるファイル種別の判定(大小文字区別なし)-------*/
 	int ftNum = 0;
 
+	#ifdef DEBUGGING
+		int tempctr = 0;
+		char* fextFunc = NULL;
+
+		printf("\nin fileTypeDetect - entered fileTypeDetect\n");
+		printf("\treceived address:%p\n", argfext);
+		printf("\treceived extention:%s\n", *argfext);
+
+		fextFunc = (char*)calloc(EXTENTION_LIMIT, sizeof(char));
+		if(fextFunc == NULL){
+			printf("memory not allocated\n");
+			return 0;
+		}
+		printf("in fileTypeDetect - fextFunc allocated(address:%p)\n", fextFunc);
+
+		printf("in fileTypeDetect - copying *argfext into fextFunc :");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			fextFunc[tempctr] = (*argfext)[tempctr];
+		}
+		printf("Done\n");
+
+		printf("in fileTypeDetect - source string:\"%s\", copied string:\"%s\"\n", *argfext, fextFunc);
+		printf("RAW (source): ");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			printf("%02x ", (*argfext)[tempctr]);
+		}
+		printf("\n");
+		printf("RAW (copied): ");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			printf("%02x ", fextFunc[tempctr]);
+		}
+		printf("\n");
+
+		printf("in fileTypeDetect - fextFunc before test:\"%s\", address:%p\n", fextFunc, fextFunc);
+		printf("RAW : ");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			printf("%02x ", fextFunc[tempctr]);
+		}
+		printf("\n");
+
+		printf("in fileTypeDetect - testing strncasecmp (string and array):");
+		strncasecmp(".hogehoge", &(fextFunc[0]), (EXTENTION_LIMIT-1));
+		printf("Done\n");
+
+		printf("in fileTypeDetect - *argfext after test:\"%s\", fextFunc after test:\"%s\"\n", *argfext, fextFunc);
+		printf("RAW (source): ");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			printf("%02x ", (*argfext)[tempctr]);
+		}
+		printf("\n");
+		printf("RAW (copied): ");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			printf("%02x ", fextFunc[tempctr]);
+		}
+		printf("\n");
+	#endif
+	
 	/*-xett-----------------------------------------------*/
-	if (strcasecmp(".xett", fext) == 0) { ftNum = 2; }
+	if (strcasecmp(".xett", fextFunc) == 0) { ftNum = 2; }
 	/*-xebn-----------------------------------------------*/
-	else if (strcasecmp(".xebn", fext) == 0) { ftNum = 3; }
+	else if (strcasecmp(".xebn", fextFunc) == 0) { ftNum = 3; }
 	/*-xeut-----------------------------------------------*/
-	else if (strcasecmp(".xeut", fext) == 0) { ftNum = 4; }
+	else if (strcasecmp(".xeut", fextFunc) == 0) { ftNum = 4; }
 	/*-xet2-----------------------------------------------*/
-	else if (strcasecmp(".xet2", fext) == 0) { ftNum = 5; }
+	else if (strcasecmp(".xet2", fextFunc) == 0) { ftNum = 5; }
 	/*-xeb2-----------------------------------------------*/
-	else if (strcasecmp(".xeb2", fext) == 0) { ftNum = 6; }
+	else if (strcasecmp(".xeb2", fextFunc) == 0) { ftNum = 6; }
 	/*-xeu2-----------------------------------------------*/
-	else if (strcasecmp(".xeu2", fext) == 0) { ftNum = 7; }
+	else if (strcasecmp(".xeu2", fextFunc) == 0) { ftNum = 7; }
 	/*-xeb3-----------------------------------------------*/
-	else if (strcasecmp(".xeb3", fext) == 0) { ftNum = 8;	}
+	else if (strcasecmp(".xeb3", fextFunc) == 0) { ftNum = 8;	}
 	/*-xeb4-----------------------------------------------*/
-	else if (strcasecmp(".xeb4", fext) == 0) { ftNum = 9;	}
+	else if (strcasecmp(".xeb4", fextFunc) == 0) { ftNum = 9;	}
 	/*-xeb5-----------------------------------------------*/
-	else if (strcasecmp(".xeb5", fext) == 0) { ftNum = 10;}
+	else if (strcasecmp(".xeb5", fextFunc) == 0) { ftNum = 10;}
 	/*-uxb------------------------------------------------*/
-	else if (strcasecmp(".uxb", fext) == 0) 
+	else if (strcasecmp(".uxb", fextFunc) == 0) 
 	{
         ftNum = FILE_ALREADY_DECRYPTED;
 		printf("指定されたファイルは、既に復号されています。\n");/*英語化準備：(Specified file has already been decrypted.)*/
@@ -67,6 +127,29 @@ int fileTypeDetect(char* fext){
 	}	
 	/*-ふつうのファイル-----------------------------------*/
 	else { ftNum = 0; }
+
+	#ifdef DEBUGGING
+		printf("in fileTypeDetect - thrown extention source after processing:\"%s\"\n", *argfext);
+		printf("RAW : ");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			printf("%02x ", (*argfext)[tempctr]);
+		}
+		printf("\n");
+		printf("in fileTypeDetect - thrown extention after processing:\"%s\"\n", fextFunc);
+		printf("RAW : ");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			printf("%02x ", fextFunc[tempctr]);
+		}
+		printf("\n");
+
+		printf("in fileTypeDetect - detected filetype : %d\n", ftNum);
+		if(fextFunc != NULL){
+			printf("in fileTypeDetect - freeing fextFunc:");
+			free(fextFunc);
+			printf("Done\n");
+		}
+		printf("exiting from fileTypeDetect\n\n");
+	#endif
 
 	/*-種別の判定終了-----------------------------------------*/
     return ftNum;

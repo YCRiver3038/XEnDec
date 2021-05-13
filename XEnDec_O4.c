@@ -24,16 +24,47 @@ void body(char fileName[])
 		return;
 	}
 
+	#ifdef DEBUGGING
+	printf("filename to be analyzed : %s\n", fileName);
+	printf("throwing address of nameWoExt: %p\n", &nameWoExt);
+	printf("throwing address of fileExt: %p\n", &fileExt);
+	#endif
+	
 	fileNameDetect(fileName, &nameWoExt, &fileExt);
 
-	ftNumRet = fileTypeDetect(fileExt);
+	#ifdef DEBUGGING
+	printf("received filename:%s\n", nameWoExt);
+	printf("received extension:%s\n", fileExt);
+	#endif
+
+	#ifdef DEBUGGING
+	printf("filename before detecting file type : %s\n", nameWoExt);
+	#endif
+
+	ftNumRet = fileTypeDetect(&fileExt);
+
+	#ifdef DEBUGGING
+	printf("filename after detecting file type : %s\n", nameWoExt);
+	#endif
+
 
 	/*種別ごとの取扱いかた------------------------------------------*/
 	if (ftNumRet == 9) //入力がVer4(xeb4)
 	{
+		#ifdef DEBUGGING
+		printf("detected file type : %d - xeb4\n", ftNumRet);
+		printf("file to be opened as input : %s\n", fileName);
+		#endif
+
 		openF = fopen(fileName, "rb");
+		#ifdef DEBUGGING
+		printf("at body() - throwing pointer openF(value:%p) to jOpen()\n", openF);
+		#endif
 		if(jOpen(openF) == FILE_CANNOT_OPEN)
         {
+			#ifdef DEBUGGING
+			printf("at body() - thrown file name:%s\n", fileName);
+			#endif
             return;
         }
 
@@ -42,16 +73,42 @@ void body(char fileName[])
 	}
 	else if ( ftNumRet == 0 ) //入力がふつうのファイル
 	{
+		#ifdef DEBUGGING
+		printf("detected file type : %d - normal file\n", ftNumRet);
+		printf("file to be opened as input : %s\n", fileName);
+		#endif
+
         openF = fopen(fileName, "rb");
+		#ifdef DEBUGGING
+		printf("at body() - throwing pointer openF(value:%p) to jOpen()\n", openF);
+		#endif
 		if(jOpen(openF) == FILE_CANNOT_OPEN)
         {
+			#ifdef DEBUGGING
+			printf("at body() - thrown file name:%s\n", fileName);
+			#endif
             return;
         }
-
+	
+		#ifdef DEBUGGING
+		printf("filename before concatenate : %s\n", nameWoExt);
+		#endif
+	
         strcat(nameWoExt, ".xeb4");
+		#ifdef DEBUGGING
+		printf("file to be opened as output : %s\n", nameWoExt);
+		#endif
+
         outF = fopen(nameWoExt, "wb");
+		#ifdef DEBUGGING
+		printf("at body() - throwing pointer outF(value:%p) to jOpen()\n", outF);
+		#endif
+
         if(jOpen(outF) == FILE_CANNOT_OPEN)
         {
+			#ifdef DEBUGGING
+			printf("at body() - thrown file name:%s\n", nameWoExt);
+			#endif
             return;
         }
 

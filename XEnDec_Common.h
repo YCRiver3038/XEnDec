@@ -1,6 +1,8 @@
 ﻿#ifndef XENDEC_COMMON_H
 #define XENDEC_COMMON_H 
 
+#define DEBUGGING
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

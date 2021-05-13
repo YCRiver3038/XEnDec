@@ -34,6 +34,7 @@ void body(char fileName[])
 		openF = fopen(fileName, "rb");
 		if(jOpen(openF) == FILE_CANNOT_OPEN)
         {
+			printf("(at body() - thrown file name:%s)\n", fileName);
             return;
         }
 
@@ -45,6 +46,7 @@ void body(char fileName[])
 		openF = fopen(fileName, "rb");
 		if(jOpen(openF) == FILE_CANNOT_OPEN)
         {
+			printf("(at body() - thrown file name:%s)\n", fileName);
             return;
         }
 
@@ -52,6 +54,7 @@ void body(char fileName[])
 		outF = fopen(nameWoExt, "wb");
         if(jOpen(outF) == FILE_CANNOT_OPEN)
         {
+			printf("(at body() - thrown file name:%s)\n", fileName);
             return;
         }
 

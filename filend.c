@@ -10,6 +10,12 @@ void fileNameDetect(char* inputedFileName, char** nameDest, char** extDest) {
 	int ctr2 = 0;
 	int nStr = 0;
 
+	#ifdef DEBUGGING
+	printf("in fileNameDetect - thrown filename to detect : %s\n", inputedFileName);
+	printf("in fileNameDetect - thrown pointer to nameDest : %p\n", nameDest);
+	printf("in fileNameDetect - thrown pointer to extDest : %p\n", extDest);
+	#endif
+
 	/*拡張子の抽出------------------------------*/
 	nExt = 0;
 	while (inputedFileName[nExt] != '\0')
@@ -65,7 +71,17 @@ void fileNameDetect(char* inputedFileName, char** nameDest, char** extDest) {
 	}
     /*----------------------------------------------------*/
 
+	#ifdef DEBUGGING
+	printf("in fileNameDetect - throwing internalFilename : %s\n", internalFileName);
+	printf("in fileNameDetect - throwing ftype : %s\n", ftype);
+	#endif
+
 	*nameDest = internalFileName;
 	*extDest = ftype;
+	#ifdef DEBUGGING
+	printf("in fileNameDetect - *nameDest : %s\n", *nameDest);
+	printf("in fileNameDetect - *extDest : %s\n", *extDest);
+	#endif
+
 	return;
 }

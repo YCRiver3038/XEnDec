@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <stdint.h>
 
 #define FILE_CANNOT_OPEN -1
 #define FILE_OPENED 0

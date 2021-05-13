@@ -1,4 +1,11 @@
-#include "XEnDec_Common.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+
+#define MAXFN 2048
+#define EXTENTION_LIMIT 12
+
 
 void fileNameDetect(char* inputedFileName, char** nameDest, char** extDest) {
 

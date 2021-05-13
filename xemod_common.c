@@ -42,62 +42,99 @@ void intToChar(int source, unsigned char target[], int wordLength)
 int fileTypeDetect(char** argfext){
 /*-拡張子によるファイル種別の判定(大小文字区別なし)-------*/
 	int ftNum = 0;
+	int tempctr = 0;
+	char* fextFunc = NULL;
 
 	#ifdef DEBUGGING
-		int tempctr = 0;
-		char* fextFunc = NULL;
-
+		int isDataChanged = 0;
+		char tempstr[EXTENTION_LIMIT] = ".hogeho";
 		printf("\nin fileTypeDetect - entered fileTypeDetect\n");
 		printf("\treceived address:%p\n", argfext);
 		printf("\treceived extention:%s\n", *argfext);
+	#endif
 
-		fextFunc = (char*)calloc(EXTENTION_LIMIT, sizeof(char));
-		if(fextFunc == NULL){
-			printf("memory not allocated\n");
-			return 0;
-		}
+	fextFunc = (char*)calloc(EXTENTION_LIMIT, sizeof(char));
+	if(fextFunc == NULL){
+		printf("memory not allocated\n");
+		return 0;
+	}
+
+	#ifdef DEBUGGING
 		printf("in fileTypeDetect - fextFunc allocated(address:%p)\n", fextFunc);
+	#endif
 
+	#ifdef DEBUGGING
 		printf("in fileTypeDetect - copying *argfext into fextFunc :");
-		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
-			fextFunc[tempctr] = (*argfext)[tempctr];
-		}
+	#endif
+
+	for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+		fextFunc[tempctr] = (*argfext)[tempctr];
+	}
+
+	#ifdef DEBUGGING
 		printf("Done\n");
 
-		printf("in fileTypeDetect - source string:\"%s\", copied string:\"%s\"\n", *argfext, fextFunc);
-		printf("RAW (source): ");
+		printf("in fileTypeDetect - comparing *argfext and fextFunc:");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			if((*argfext)[tempctr] != fextFunc[tempctr]){
+				printf("data changed!\n");
+				isDataChanged = 1;
+				break;
+			}
+		}
+		if(!isDataChanged)
+		{
+			printf("data unchanged\n");
+		}
+
+		printf("in fileTypeDetect - *argfext:\"%s\", fextFunc:\"%s\"\n", *argfext, fextFunc);
+		printf("RAW (*argfext): ");
 		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
 			printf("%02x ", (*argfext)[tempctr]);
 		}
 		printf("\n");
-		printf("RAW (copied): ");
-		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
-			printf("%02x ", fextFunc[tempctr]);
-		}
-		printf("\n");
-
-		printf("in fileTypeDetect - fextFunc before test:\"%s\", address:%p\n", fextFunc, fextFunc);
-		printf("RAW : ");
+		printf("RAW (fextFunc): ");
 		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
 			printf("%02x ", fextFunc[tempctr]);
 		}
 		printf("\n");
 
 		printf("in fileTypeDetect - testing strncasecmp (string and array):");
-		strncasecmp(".hogehoge", &(fextFunc[0]), (EXTENTION_LIMIT-1));
+		strncasecmp(tempstr, &(fextFunc[0]), (EXTENTION_LIMIT-1));
 		printf("Done\n");
 
+		printf("in fileTypeDetect - comparing *argfext and fextFunc:");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			if((*argfext)[tempctr] != fextFunc[tempctr]){
+				printf("data changed!\n");
+				isDataChanged = 1;
+				break;
+			}
+		}
+		if(!isDataChanged)
+		{
+			printf("data unchanged\n");
+		}
+
 		printf("in fileTypeDetect - *argfext after test:\"%s\", fextFunc after test:\"%s\"\n", *argfext, fextFunc);
-		printf("RAW (source): ");
+		printf("RAW (*argfext): ");
 		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
 			printf("%02x ", (*argfext)[tempctr]);
 		}
 		printf("\n");
-		printf("RAW (copied): ");
+		printf("RAW (fextFunc): ");
 		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
 			printf("%02x ", fextFunc[tempctr]);
 		}
 		printf("\n");
+
+		printf("in fileTypeDetect - using fextFunc to determine filetype : %s\n", fextFunc);
+		printf("RAW : ");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			printf("%02x ", fextFunc[tempctr]);
+		}
+		printf("\n");
+
 	#endif
 	
 	/*-xett-----------------------------------------------*/
@@ -129,13 +166,7 @@ int fileTypeDetect(char** argfext){
 	else { ftNum = 0; }
 
 	#ifdef DEBUGGING
-		printf("in fileTypeDetect - thrown extention source after processing:\"%s\"\n", *argfext);
-		printf("RAW : ");
-		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
-			printf("%02x ", (*argfext)[tempctr]);
-		}
-		printf("\n");
-		printf("in fileTypeDetect - thrown extention after processing:\"%s\"\n", fextFunc);
+		printf("in fileTypeDetect - thrown extention source after processing:\"%s\"\n", fextFunc);
 		printf("RAW : ");
 		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
 			printf("%02x ", fextFunc[tempctr]);

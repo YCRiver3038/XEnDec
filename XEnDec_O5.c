@@ -1,6 +1,6 @@
-﻿#include "xemod5.h"
-#include "filend.h"
+﻿#include "filend.h"
 #include "xemod_common.h"
+#include "xemod5.h"
 
 void body(char fileName[])
 {

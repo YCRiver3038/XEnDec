@@ -6,7 +6,6 @@
 #define MAXFN 2048
 #define EXTENTION_LIMIT 12
 
-
 void fileNameDetect(char* inputedFileName, char** nameDest, char** extDest) {
 
 	char internalFileName[MAXFN + EXTENTION_LIMIT] = { 0 };

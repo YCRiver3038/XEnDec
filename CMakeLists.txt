@@ -18,3 +18,6 @@ target_link_libraries(XEnDec_O4.out xemod4 xemod_common filend)
 
 add_executable(XEnDec_O5.out XEnDec_O5.c)
 target_link_libraries(XEnDec_O5.out xemod5 xemod_common filend)
+
+add_executable(XEnDec_V5-2.out XEnDec_V5-2.c)
+target_link_libraries(XEnDec_V5-2.out xemod3 xemod4 xemod5 xemod_common filend)

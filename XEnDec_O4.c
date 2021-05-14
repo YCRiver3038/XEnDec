@@ -185,24 +185,21 @@ void body(char fileName[])
         printf("スキップしました。\n"); 
         return;       
     }
-/*
+	
 	#ifdef DEBUGGING
 	printf("in body() - freeing allocated memory:");
 	#endif
 
 	if(nameWoExt != NULL){
 		free(nameWoExt);
-		return;
 	}
 	if(fileExt != NULL){
 		free(fileExt);
-		return;
 	}
 
 	#ifdef DEBUGGING
 	printf("done\n");
 	#endif
-*/
 	#ifdef DEBUGGING
 	printf("in body() - closiong files\n");
 	#endif

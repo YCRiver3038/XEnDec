@@ -58,6 +58,7 @@ int fileTypeDetect(char** argfext){
 		printf("memory not allocated\n");
 		return 0;
 	}
+	memset(fextFunc, 0, EXTENTION_LIMIT);
 
 	#ifdef DEBUGGING
 		printf("in fileTypeDetect - fextFunc allocated(address:%p)\n", fextFunc);

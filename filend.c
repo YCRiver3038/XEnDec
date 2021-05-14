@@ -94,5 +94,12 @@ void fileNameDetect(char* inputedFileName, char** nameDest, char** extDest) {
 	printf("in fileNameDetect - *extDest : %s\n", *extDest);
 	#endif
 
+	if(internalFileName != NULL){
+		free(internalFileName);
+	}
+	if(ftype != NULL){
+		free(ftype);
+	}
+
 	return;
 }

@@ -2,6 +2,8 @@
 #include "xemod_common.h"
 #include "xemod3.h"
 
+#undef DEBUGGING
+
 void body(char fileName[])
 {
 	FILE *openF = NULL;
@@ -34,19 +36,25 @@ void body(char fileName[])
 		openF = fopen(fileName, "rb");
 		if(jOpen(openF) == FILE_CANNOT_OPEN)
         {
-			printf("(at body() - thrown file name:%s)\n", fileName);
+			#ifdef DEBUGGING
+				printf("(at body() - thrown file name:%s)\n", fileName);
+			#endif
             return;
         }
 
 		printf("処理中...\n");
-		genXDEC3(openF, nameWoExt);
+		if(genXDEC3(openF, nameWoExt) == V3_IDERR){
+			printf("ファイルが不正か、対応していない形式です。\n");
+		}
 	}
 	else if ( ftNumRet == 0 ) //入力がふつうのファイル
 	{
 		openF = fopen(fileName, "rb");
 		if(jOpen(openF) == FILE_CANNOT_OPEN)
         {
-			printf("(at body() - thrown file name:%s)\n", fileName);
+			#ifdef DEBUGGING
+				printf("(at body() - thrown file name:%s)\n", fileName);
+			#endif
             return;
         }
 
@@ -54,7 +62,9 @@ void body(char fileName[])
 		outF = fopen(nameWoExt, "wb");
         if(jOpen(outF) == FILE_CANNOT_OPEN)
         {
-			printf("(at body() - thrown file name:%s)\n", fileName);
+			#ifdef DEBUGGING
+				printf("(at body() - thrown file name:%s)\n", fileName);
+			#endif
             return;
         }
 
@@ -70,7 +80,7 @@ void body(char fileName[])
     }
 
 	#ifdef DEBUGGING
-	printf("in body() - freeing allocated memory:");
+		printf("in body() - freeing allocated memory:");
 	#endif
 
 	if(nameWoExt != NULL){
@@ -81,11 +91,11 @@ void body(char fileName[])
 	}
 
 	#ifdef DEBUGGING
-	printf("done\n");
+		printf("done\n");
 	#endif
 	
 	#ifdef DEBUGGING
-	printf("in body() - closiong files\n");
+		printf("in body() - closiong files\n");
 	#endif
 
 	if (openF != NULL){
@@ -96,7 +106,7 @@ void body(char fileName[])
 	}
 
 	#ifdef DEBUGGING
-	printf("in body() - file closed\n");
+		printf("in body() - file closed\n");
 	#endif
 
 }

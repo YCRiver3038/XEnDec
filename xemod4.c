@@ -61,7 +61,6 @@ int genXDEC4(FILE *Finp, char oFileName[])
 	
 	if(strcmp(V4Identifier, V4CORRECT) != 0)
 	{
-		printf("ファイルが不正か、対応していない形式です。\n");
 		return V4_IDERR;
 	}
 	else
@@ -70,7 +69,6 @@ int genXDEC4(FILE *Finp, char oFileName[])
 
 		fread(V4Extention, sizeof(char), EXTENTION_LIMIT, Finp);
 		strcat(oFileName, V4Extention);
-		printf("拡張子：%s\n", V4Extention);
 		outFile = fopen(oFileName, "wb");
 		if(jOpen(outFile) == FILE_CANNOT_OPEN)
         {

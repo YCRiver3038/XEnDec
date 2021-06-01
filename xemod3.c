@@ -80,7 +80,6 @@ int genXDEC3(FILE *Finp, char oFileName[])
 	
 	if(strcmp(V3Identifier, V3CORRECT) != 0)
 	{
-		printf("ファイルが不正か、対応していない形式です。\n");
 		return V3_IDERR;
 	}
 	else
@@ -89,7 +88,6 @@ int genXDEC3(FILE *Finp, char oFileName[])
 
 		fread(V3Extention, sizeof(char), EXTENTION_LIMIT, Finp);
 		strcat(oFileName, V3Extention);
-		printf("拡張子：%s\n", V3Extention);
 		outFile = fopen(oFileName, "wb");
 
 		if(jOpen(outFile) == FILE_CANNOT_OPEN)

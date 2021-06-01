@@ -1,5 +1,7 @@
 #include "XEnDec_Common.h"
 
+#undef DEBUGGING
+
 int randNum = 2885;
 
 int genRand32()//(AX+B)modM
@@ -16,14 +18,13 @@ void setRand32(int number)
 int jOpen(FILE *inputf)
 {
 	#ifdef DEBUGGING
-	printf("at jOpen() - thrown pointer:%p\n", inputf);
+		printf("at jOpen() - thrown pointer:%p\n", inputf);
 	#endif
 	if (inputf == NULL)
 	{
 		printf("ファイルが開けませんでした。\n");
 		return FILE_CANNOT_OPEN;
 	}
-
     return FILE_OPENED;
 }
 
@@ -62,9 +63,6 @@ int fileTypeDetect(char** argfext){
 
 	#ifdef DEBUGGING
 		printf("in fileTypeDetect - fextFunc allocated(address:%p)\n", fextFunc);
-	#endif
-
-	#ifdef DEBUGGING
 		printf("in fileTypeDetect - copying *argfext into fextFunc :");
 	#endif
 
@@ -135,7 +133,6 @@ int fileTypeDetect(char** argfext){
 			printf("%02x ", fextFunc[tempctr]);
 		}
 		printf("\n");
-
 	#endif
 	
 	/*-xett-----------------------------------------------*/

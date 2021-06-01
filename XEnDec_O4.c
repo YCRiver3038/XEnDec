@@ -1,6 +1,7 @@
 ﻿#include "filend.h"
 #include "xemod_common.h"
 #include "xemod4.h"
+#undef DEBUGGING
 
 void body(char fileName[])
 {
@@ -28,54 +29,52 @@ void body(char fileName[])
 	}
 
 	#ifdef DEBUGGING
-	printf("in body() - filename to be analyzed : %s\n", fileName);
-	printf("in body() - throwing address of nameWoExt to fileNameDetect (address:%p)\n", &nameWoExt);
-	printf("in body() - throwing address of fileExt to fileNameDetect (address:%p)\n", &fileExt);
+		printf("in body() - filename to be analyzed : %s\n", fileName);
+		printf("in body() - throwing address of nameWoExt to fileNameDetect (address:%p)\n", &nameWoExt);
+		printf("in body() - throwing address of fileExt to fileNameDetect (address:%p)\n", &fileExt);
 	#endif
 	
 	fileNameDetect(fileName, &nameWoExt, &fileExt);
 
 	#ifdef DEBUGGING
-	printf("in body() - received filename from fileNameDetect:%s\n", nameWoExt);
-	printf("in body() - received extension from fileNameDetect:%s\n", fileExt);
-	#endif
+		printf("in body() - received filename from fileNameDetect:%s\n", nameWoExt);
+		printf("in body() - received extension from fileNameDetect:%s\n", fileExt);
 
-	#ifdef DEBUGGING
-	printf("in body() - filename before detecting file type : %s\n", nameWoExt);
-	printf("address:%p\n", nameWoExt);
-	printf("RAW : ");
-	for(tempctr = 0; (nameWoExt[tempctr] != 0) && (tempctr < MAXFN); tempctr++){
-		printf("%02x ", nameWoExt[tempctr]);
-	}
-	printf("\ncounted:%d\n", tempctr);
+		printf("in body() - filename before detecting file type : %s\n", nameWoExt);
+		printf("address:%p\n", nameWoExt);
+		printf("RAW : ");
+		for(tempctr = 0; (nameWoExt[tempctr] != 0) && (tempctr < MAXFN); tempctr++){
+			printf("%02x ", nameWoExt[tempctr]);
+		}
+		printf("\ncounted:%d\n", tempctr);
 
-	printf("in body() - extention before detecting file type : %s\n", fileExt);
-	printf("address:%p\n", fileExt);
-	printf("RAW : ");
-	for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
-		printf("%02x ", fileExt[tempctr]);
-	}
-	printf("\ncounted:%d\n", tempctr);
+		printf("in body() - extention before detecting file type : %s\n", fileExt);
+		printf("address:%p\n", fileExt);
+		printf("RAW : ");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			printf("%02x ", fileExt[tempctr]);
+		}
+		printf("\ncounted:%d\n", tempctr);
 	#endif
 
 	ftNumRet = fileTypeDetect(&fileExt);
 
 	#ifdef DEBUGGING
-	printf("in body() - filename after detecting file type : %s\n", nameWoExt);
-	printf("address:%p\n", nameWoExt);
-	printf("RAW : ");
-	for(tempctr = 0; (nameWoExt[tempctr] != 0) && (tempctr < MAXFN); tempctr++){
-		printf("%02x ", nameWoExt[tempctr]);
-	}
-	printf("\ncounted:%d\n", tempctr);
+		printf("in body() - filename after detecting file type : %s\n", nameWoExt);
+		printf("address:%p\n", nameWoExt);
+		printf("RAW : ");
+		for(tempctr = 0; (nameWoExt[tempctr] != 0) && (tempctr < MAXFN); tempctr++){
+			printf("%02x ", nameWoExt[tempctr]);
+		}
+		printf("\ncounted:%d\n", tempctr);
 
-	printf("in body() - extention before detecting file type : %s\n", fileExt);
-	printf("address:%p\n", fileExt);
-	printf("RAW : ");
-	for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
-		printf("%02x ", fileExt[tempctr]);
-	}
-	printf("\ncounted:%d\n", tempctr);
+		printf("in body() - extention before detecting file type : %s\n", fileExt);
+		printf("address:%p\n", fileExt);
+		printf("RAW : ");
+		for(tempctr = 0; tempctr < EXTENTION_LIMIT; tempctr++){
+			printf("%02x ", fileExt[tempctr]);
+		}
+		printf("\ncounted:%d\n", tempctr);
 	#endif
 
 
@@ -83,84 +82,85 @@ void body(char fileName[])
 	if (ftNumRet == 9) //入力がVer4(xeb4)
 	{
 		#ifdef DEBUGGING
-		printf("in body() - detected file type : %d - xeb4\n", ftNumRet);
-		printf("in body() - file to be opened as input : %s\n", fileName);
+			printf("in body() - detected file type : %d - xeb4\n", ftNumRet);
+			printf("in body() - file to be opened as input : %s\n", fileName);
 		#endif
 
 		openF = fopen(fileName, "rb");
 		#ifdef DEBUGGING
-		printf("in body() - throwing pointer openF(value:%p) to jOpen()\n", openF);
+			printf("in body() - throwing pointer openF(value:%p) to jOpen()\n", openF);
 		#endif
 		if(jOpen(openF) == FILE_CANNOT_OPEN)
         {
 			#ifdef DEBUGGING
-			printf("in body() - thrown file name:%s\n", fileName);
+				printf("in body() - thrown file name:%s\n", fileName);
 			#endif
             return;
         }
 
 		printf("処理中...\n");
-		genXDEC4(openF, nameWoExt);
+		if(genXDEC4(openF, nameWoExt) == V4_IDERR){
+			printf("ファイルが不正か、対応していない形式です。\n");
+		}
 	}
 	else if ( ftNumRet == 0 ) //入力がふつうのファイル
 	{
 		#ifdef DEBUGGING
-		printf("in body() - detected file type : %d - normal file\n", ftNumRet);
-		printf("in body() - file to be opened as input : %s\n", fileName);
-		printf("RAW : ");
-		for(tempctr = 0; (fileName[tempctr] != 0) && (tempctr < MAXFN); tempctr++){
-			printf("%02x ", fileName[tempctr]);
-		}
-		printf("\ncounted:%d\n", tempctr);
-
+			printf("in body() - detected file type : %d - normal file\n", ftNumRet);
+			printf("in body() - file to be opened as input : %s\n", fileName);
+			printf("RAW : ");
+			for(tempctr = 0; (fileName[tempctr] != 0) && (tempctr < MAXFN); tempctr++){
+				printf("%02x ", fileName[tempctr]);
+			}
+			printf("\ncounted:%d\n", tempctr);
 		#endif
 
         openF = fopen(fileName, "rb");
 		#ifdef DEBUGGING
-		printf("in body() - throwing pointer openF(value:%p) to jOpen()\n", openF);
+			printf("in body() - throwing pointer openF(value:%p) to jOpen()\n", openF);
 		#endif
 		if(jOpen(openF) == FILE_CANNOT_OPEN)
         {
 			#ifdef DEBUGGING
-			printf("in body() - thrown file name:%s\n", fileName);
+				printf("in body() - thrown file name:%s\n", fileName);
 			#endif
             return;
         }
 	
 		#ifdef DEBUGGING
-		printf("in body() - filename before concatenate : %s\n", nameWoExt);
-		printf("RAW : ");
-		for(tempctr = 0; (nameWoExt[tempctr] != 0) && (tempctr < MAXFN); tempctr++){
-			printf("%02x ", nameWoExt[tempctr]);
-		}
-		printf("\ncounted:%d\n", tempctr);
-		#endif
-	
-        strcat(nameWoExt, ".xeb4");
-
-		#ifdef DEBUGGING
-		printf("in body() - file to be opened as output : %s\n", nameWoExt);
-		printf("RAW : ");
-		for(tempctr = 0; (nameWoExt[tempctr] != 0) && (tempctr < MAXFN); tempctr++){
-			printf("%02x ", nameWoExt[tempctr]);
-		}
-		printf("\ncounted:%d\n", tempctr);
-		#endif
-
-        outF = fopen(nameWoExt, "wb");
-		#ifdef DEBUGGING
-		printf("in body() - throwing pointer outF(value:%p) to jOpen()\n", outF);
-		#endif
-
-        if(jOpen(outF) == FILE_CANNOT_OPEN)
-        {
-			#ifdef DEBUGGING
-			printf("in body() - thrown file name:%s\n", nameWoExt);
+			printf("in body() - filename before concatenate : %s\n", nameWoExt);
 			printf("RAW : ");
 			for(tempctr = 0; (nameWoExt[tempctr] != 0) && (tempctr < MAXFN); tempctr++){
 				printf("%02x ", nameWoExt[tempctr]);
 			}
 			printf("\ncounted:%d\n", tempctr);
+		#endif
+	
+        strcat(nameWoExt, ".xeb4");
+
+		#ifdef DEBUGGING
+			printf("in body() - file to be opened as output : %s\n", nameWoExt);
+			printf("RAW : ");
+			for(tempctr = 0; (nameWoExt[tempctr] != 0) && (tempctr < MAXFN); tempctr++){
+				printf("%02x ", nameWoExt[tempctr]);
+			}
+			printf("\ncounted:%d\n", tempctr);
+		#endif
+
+        outF = fopen(nameWoExt, "wb");
+		#ifdef DEBUGGING
+			printf("in body() - throwing pointer outF(value:%p) to jOpen()\n", outF);
+		#endif
+
+        if(jOpen(outF) == FILE_CANNOT_OPEN)
+        {
+			#ifdef DEBUGGING
+				printf("in body() - thrown file name:%s\n", nameWoExt);
+				printf("RAW : ");
+				for(tempctr = 0; (nameWoExt[tempctr] != 0) && (tempctr < MAXFN); tempctr++){
+					printf("%02x ", nameWoExt[tempctr]);
+				}
+				printf("\ncounted:%d\n", tempctr);
 			#endif
             return;
         }
@@ -170,13 +170,13 @@ void body(char fileName[])
         printf("処理中...\n");
 		
 		#ifdef DEBUGGING
-		printf("in body() - entering genXENC4()\n");
+			printf("in body() - entering genXENC4()\n");
 		#endif
 
         genXENC4(openF, outF, V4seed, fileExt);
 
 		#ifdef DEBUGGING
-		printf("in body() - exited from genXENC4()\n");
+			printf("in body() - exited from genXENC4()\n");
 		#endif
 
 	}
@@ -187,7 +187,7 @@ void body(char fileName[])
     }
 	
 	#ifdef DEBUGGING
-	printf("in body() - freeing allocated memory:");
+		printf("in body() - freeing allocated memory:");
 	#endif
 
 	if(nameWoExt != NULL){
@@ -198,10 +198,9 @@ void body(char fileName[])
 	}
 
 	#ifdef DEBUGGING
-	printf("done\n");
-	#endif
-	#ifdef DEBUGGING
-	printf("in body() - closiong files\n");
+		printf("done\n");
+
+		printf("in body() - closiong files\n");
 	#endif
 
 	if (openF != NULL){
@@ -212,7 +211,7 @@ void body(char fileName[])
 	}
 
 	#ifdef DEBUGGING
-	printf("in body() - file closed\n");
+		printf("in body() - file closed\n");
 	#endif
 }
 

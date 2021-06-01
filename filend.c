@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 
-#define DEBUGGING
+//#define DEBUGGING
 
 #define MAXFN (INT32_MAX - 1)
 #define EXTENTION_LIMIT (INT32_MAX - 1)
@@ -23,9 +23,9 @@ void fileNameDetect(char* inputedFileName, char** nameDest, char** extDest) {
 	int32_t eDestSize = 0;
 
 	#ifdef DEBUGGING
-	printf("in fileNameDetect - thrown filename to detect : %s\n", inputedFileName);
-	printf("in fileNameDetect - thrown pointer to nameDest : %p\n", nameDest);
-	printf("in fileNameDetect - thrown pointer to extDest : %p\n", extDest);
+		printf("in fileNameDetect - thrown filename to detect : %s\n", inputedFileName);
+		printf("in fileNameDetect - thrown pointer to nameDest : %p\n", nameDest);
+		printf("in fileNameDetect - thrown pointer to extDest : %p\n", extDest);
 	#endif
 
 	/*拡張子の抽出------------------------------*/
@@ -78,8 +78,8 @@ void fileNameDetect(char* inputedFileName, char** nameDest, char** extDest) {
     /*----------------------------------------------------*/
 
 	#ifdef DEBUGGING
-	printf("in fileNameDetect - throwing internalFilename : %s\n", internalFileName);
-	printf("in fileNameDetect - throwing ftype : %s\n", ftype);
+		printf("in fileNameDetect - throwing internalFilename : %s\n", internalFileName);
+		printf("in fileNameDetect - throwing ftype : %s\n", ftype);
 	#endif
 
 	for (ctr1 = 0; (internalFileName[ctr1] != '\0'); ctr1++){
@@ -90,8 +90,8 @@ void fileNameDetect(char* inputedFileName, char** nameDest, char** extDest) {
 	}
 
 	#ifdef DEBUGGING
-	printf("in fileNameDetect - *nameDest : %s\n", *nameDest);
-	printf("in fileNameDetect - *extDest : %s\n", *extDest);
+		printf("in fileNameDetect - *nameDest : %s\n", *nameDest);
+		printf("in fileNameDetect - *extDest : %s\n", *extDest);
 	#endif
 
 	if(internalFileName != NULL){
